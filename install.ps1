@@ -8,6 +8,7 @@ $ErrorActionPreference = "Stop"
 $repo = "vanillaherb/codex-plugin-marketplace"
 $pluginName = "github-pages-deploy"
 $zipUrl = "https://github.com/$repo/archive/refs/heads/$Branch.zip"
+$fallbackZipUrl = "https://codeload.github.com/$repo/zip/refs/heads/$Branch"
 
 $homeDir = [Environment]::GetFolderPath("UserProfile")
 $pluginsRoot = Join-Path $homeDir "plugins"
@@ -29,6 +30,32 @@ function Write-JsonFile {
   [System.IO.File]::WriteAllText($Path, $json, [System.Text.UTF8Encoding]::new($false))
 }
 
+function Save-WithRetry {
+  param(
+    [Parameter(Mandatory = $true)][string[]]$Urls,
+    [Parameter(Mandatory = $true)][string]$OutFile,
+    [int]$Attempts = 3
+  )
+
+  $lastError = $null
+  foreach ($url in $Urls) {
+    for ($i = 1; $i -le $Attempts; $i++) {
+      try {
+        Write-Host "Downloading package ($i/$Attempts): $url"
+        Invoke-WebRequest -Uri $url -OutFile $OutFile -UseBasicParsing
+        return
+      } catch {
+        $lastError = $_
+        if ($i -lt $Attempts) {
+          Start-Sleep -Seconds (2 * $i)
+        }
+      }
+    }
+  }
+
+  throw $lastError
+}
+
 try {
   Write-Host "Installing Codex plugin: $pluginName" -ForegroundColor Cyan
 
@@ -37,8 +64,7 @@ try {
   New-Item -ItemType Directory -Force -Path $pluginsRoot | Out-Null
   New-Item -ItemType Directory -Force -Path $marketplaceRoot | Out-Null
 
-  Write-Host "Downloading marketplace..."
-  Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath -UseBasicParsing
+  Save-WithRetry -Urls @($zipUrl, $fallbackZipUrl) -OutFile $zipPath
 
   Write-Host "Extracting package..."
   Expand-Archive -LiteralPath $zipPath -DestinationPath $extractPath -Force
