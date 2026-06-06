@@ -1,6 +1,6 @@
 param(
   [string]$Branch = "main",
-  [switch]$NoOpen
+  [switch]$OpenCodex
 )
 
 $ErrorActionPreference = "Stop"
@@ -130,10 +130,10 @@ try {
   Write-Host "Plugin: $targetPlugin"
   Write-Host "Marketplace: $marketplacePath"
   Write-Host ""
-  Write-Host "Restart Codex or open a new Codex thread if the plugin does not appear immediately."
-  Write-Host "Codex link: $viewUrl"
+  Write-Host "Restart Codex or open a new Codex thread, then install/view github-pages-deploy from the Personal marketplace."
+  Write-Host "Codex link, if your system supports it: $viewUrl"
 
-  if (-not $NoOpen) {
+  if ($OpenCodex) {
     try {
       Start-Process $viewUrl
     } catch {
