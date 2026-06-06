@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Pages Deploy"
+  short_description: "Publish static files with GitHub Pages."
+  default_prompt: "Deploy this static site to GitHub Pages and return the published URL."

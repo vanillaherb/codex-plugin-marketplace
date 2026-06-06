@@ -1,0 +1,20 @@
+{
+  "name": "vanillaherb",
+  "interface": {
+    "displayName": "Vanillaherb Plugins"
+  },
+  "plugins": [
+    {
+      "name": "github-pages-deploy",
+      "source": {
+        "source": "local",
+        "path": "./plugins/github-pages-deploy"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

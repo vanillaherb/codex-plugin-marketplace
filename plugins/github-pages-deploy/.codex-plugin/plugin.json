@@ -1,0 +1,27 @@
+{
+  "name": "github-pages-deploy",
+  "version": "0.1.0",
+  "description": "Deploy static sites to GitHub Pages from Codex using the GitHub REST API.",
+  "author": {
+    "name": "vanillaherb",
+    "url": "https://github.com/vanillaherb"
+  },
+  "homepage": "https://github.com/vanillaherb/github-pages-deploy-codex-plugin",
+  "repository": "https://github.com/vanillaherb/github-pages-deploy-codex-plugin",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "GitHub Pages Deploy",
+    "shortDescription": "Publish static sites to GitHub Pages.",
+    "longDescription": "Adds a Codex skill for uploading local static website files to GitHub, enabling GitHub Pages, waiting for deployment, and returning the published URL without requiring local git or gh.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Automation"
+    ],
+    "defaultPrompt": [
+      "Deploy this static site to GitHub Pages.",
+      "Upload these files to GitHub and return the Pages URL."
+    ]
+  }
+}
